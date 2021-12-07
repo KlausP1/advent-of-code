@@ -6,8 +6,8 @@ let gamma = ""
 let epsilon = ''
 num1 = 0
 num0 = 0
-// total 11
-amount = 0
+o2=""
+o2=""
 
 const rl = readline.createInterface({
     input: fs.createReadStream('day3/inputday3.txt'),
