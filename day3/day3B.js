@@ -1,13 +1,14 @@
 const fs = require('fs')
 const readline = require('readline')
 
-let lines = [];
+let lines1 = [];
+let lines2 = [];
 let gamma = ""
 let epsilon = ''
 num1 = 0
 num0 = 0
 o2=""
-o2=""
+co2=""
 
 const rl = readline.createInterface({
     input: fs.createReadStream('day3/inputday3.txt'),
@@ -16,32 +17,63 @@ const rl = readline.createInterface({
 
 
 rl.on('line',(line) => {
-    lines.push(line);
+    lines1.push(line);
+    lines2.push(line);
 })
 
-
-
-rl.on('close', () => {
-    for(i = 0;i<12;i++){
-        for(let j = 0;j < lines.length;j++){
-            if(lines[j][i] == "1"){
-                num0++
+function check (inp, num, n1, n0, o){
+    if(inp.length > 1){
+        for(let j = 0;j < inp.length;j++){
+            if(inp[j][num] == "0"){
+                n0++
             }else {
-                num1++
+                n1++
             }
         }
-        if(num0>num1){
-            gamma+="0"
-            epsilon+="1"
-        } else{
-            gamma+="1"
-            epsilon+="0"
+        if(o){
+        if(n1>=n0){
+            for(let j = inp.length-1; j >=0; j--){
+                if(inp[j][num]=="0"){
+                    inp.splice(j, 1)
+                }
+            }
+        } else {
+            for(let j = inp.length-1; j >=0; j--){
+                if(inp[j][num]=="1"){
+                    inp.splice(j,1)
+                }
+            }
         }
-        num0 = 0
-        num1=0
+    } else {
+        if(n1>=n0){
+            for(let j = inp.length-1; j >=0; j--){
+                if(inp[j][num]=="1"){
+                    inp.splice(j, 1)
+                }
+            }
+        } else {
+            for(let j = inp.length-1; j >=0; j--){
+                if(inp[j][num]=="0"){
+                    inp.splice(j,1)
+                }
+            }
+        }
     }
+        num++
+        check(inp, num, 0, 0, o)
+    } else {
+        if (o){
+            o2 = inp[0]
+        } else {
+            co2 = inp[0]
+        }
+    }
+}
 
-    let decgamma=parseInt(gamma, 2).toString(10);
-    let decepsilon=parseInt(epsilon, 2).toString(10)
-    console.log(parseInt(decgamma)*parseInt(decepsilon))
+rl.on('close', () => {
+    check(lines1, 0, 0, 0, true)
+    check(lines2, 0, 0, 0, false)
+    let deco2=parseInt(o2, 2).toString(10);
+    let decco2=parseInt(co2, 2).toString(10);
+    console.log(deco2*decco2)
 })
